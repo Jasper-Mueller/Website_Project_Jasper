@@ -37,7 +37,7 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "JCM"
+    title = "JASPER"
     subtitle = "An Analytics Journey"
     menu = "Menu"
     # Optional logo as brand stored in img/
@@ -68,13 +68,13 @@ disqusShortname = ""
 
     # Button Style 1
     [[params.navigation.button1]]
-      name = "Get Started"
+      name = "Have a look!"
       url = "blogs"
 
     # Button Style 2
-    [[params.navigation.button2]]
-      name = "Log In"
-      url = "#"
+    #[[params.navigation.button2]]
+      #name = "Log In"
+      #url = "#"
 
 
   # Banner section
@@ -83,7 +83,7 @@ disqusShortname = ""
     # the 'static/img' folder.
     title = "Hey, I'm Jasper. Nice to meet you!"
     subtitle = "IN THE UPCOMING WEEKS, I WILL TAKE YOU ON MY JOURNEY EXPLORING R AND DATA SCIENCE AS A WHOLE. BUCKLE UP!"
-    buttonText = "Get Started"
+    buttonText = "Have a look!"
 
 
   # Tiles Section
