@@ -6,10 +6,11 @@ title: "Bike Rentals London"
 author: "Jasper"
 date: "14 9 2020"
 output: html_document
-slug: "london_bike_rentals"
-description: "An indepth look at bike rentals in London"
+slug: london_bike_rentals
+description: An indepth look at bike rentals in London
 keywords: ""
 image: pic07.jpg
+draft: false
 ---
 
 
