@@ -98,8 +98,8 @@ disqusShortname = ""
       url = "blogs/blog5"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
+      title = "LONDON BIKE RENTALS"
+      subtitle = "Breakdown of weekly bike rentals in London"
       image = "pic07.jpg"
       url = "blogs/london_bike_rentals"
 
