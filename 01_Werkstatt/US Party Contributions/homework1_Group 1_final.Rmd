@@ -1,0 +1,759 @@
+---
+title: "Session 2: Homework 1"
+author: "Group 1"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
+---
+
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center")
+```
+
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+```
+
+
+
+# Where Do People Drink The Most Beer, Wine And Spirits?
+
+Back in 2014, [fivethiryeight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) published an article on alchohol consumption in different countries.
+
+
+```{r, load_alcohol_data, cache=TRUE}
+library(fivethirtyeight)
+data(drinks)
+
+```
+
+
+
+**There are four numeric variables: *beer_servings*, *spirit_servings*, *wine_servings*, and *total_liters_of_pure_alcohol*. There is one character variable, *country*. There are no missing values.**
+
+
+```{r glimpse_skim_data}
+
+glimpse(drinks)
+skim(drinks)
+```
+
+
+
+
+```{r beer_plot}
+top25_beer <- top_n(drinks, 25, beer_servings)
+
+ggplot(data = top25_beer, mapping = aes (y = reorder(country, beer_servings), x = beer_servings)) + geom_col(fill='light blue') + labs(title = "Top 25 Beer Consuming Countries",
+y = "Country", x = "Beer Servings") +
+NULL
+
+  
+```
+
+
+```{r wine_plot}
+top25_wine <- top_n(drinks, 25, wine_servings)
+ggplot(data = top25_wine, mapping = aes (y = reorder(country, wine_servings), x = wine_servings)) +   geom_col(fill='sky blue') +
+labs(title = "Top 25 Wine Consuming Countries",
+y = "Country", x = "Wine Servings") +
+NULL
+
+```
+
+
+```{r spirit_plot}
+top25_spirits <- top_n(drinks, 25, spirit_servings)
+ggplot(data = top25_spirits, mapping = aes (y = reorder(country, spirit_servings), x = spirit_servings)) + geom_col(fill='light green') + labs(title = "Top 25 Spirits Consuming Countries",
+y = "Country", x = "Spirits Servings") +
+NULL
+
+```
+PLEASE EDIT - ILANA
+
+**Country vs Beer consumption** histogram shows that *Namibia* and *Czhech Republic* are the top two countries. Even though, Namibian's beer is produced mainly for export, a large portion of Namibian's population consumes beer. Based on their experience, Namibian's beer does not give any hangover. This might be a reason of such large beer consumption.
+
+It is well known that wine is integral to French culture. *France* has a long history of wine production and even nowadays a huge proportion of its land is used specifically for viniculture. Due to high wine consumption, specifically of red wine, French have a low rate of heart disease. When red wine is consumed in moderation, its antioxidants tend reduce blood clots and "bad" cholesterol. It is also worth noting that France keeps its wine price relatively low comparing to US. Based on **Country vs Wine consumption** histogram, wine is popular in European, Scandinavian, and South American countries. Whereas, based on the **Country vs Spirit Consumption** histogram, *Grenadians* are in the lead of spirit consumption or so-called ‘hard liquor’, whereas Asian countries, such as *China* and *Mongolia* are at the bottom of the list.
+
+
+# Analysis of movies- IMDB dataset
+
+We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movie dataset](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset)
+
+ 
+```{r,load_movies, warning=FALSE, message=FALSE}
+
+movies <- read_csv(here::here("data", "movies.csv"))
+glimpse(movies)
+
+```
+
+Besides the obvious variables of `title`, `genre`, `director`, `year`, and `duration`, the rest of the variables are as follows:
+
+- `gross` : The gross earnings in the US box office, not adjusted for inflation
+- `budget`: The movie's budget 
+- `cast_facebook_likes`: the number of Facebook likes cast members received
+- `votes`: the number of people who voted for (or rated) the movie in IMDB 
+- `reviews`: the number of reviews for that movie
+- `rating`: IMDB average rating 
+
+Based on the results below, there are **no missing values** (or NAs). There are **54 duplicate entries**. (2961-2907=54) 
+
+```{r}
+movies <- read_csv(here::here("data", "movies.csv"))
+glimpse(movies)
+skim(movies)
+# Delete duplicates.
+movies<-distinct(movies,title,.keep_all = TRUE)
+
+```
+
+
+
+
+The table below shows the count of movies by genre and ranked in descending order.
+```{r}
+movies_n <- movies %>% 
+  count(genre) %>%
+  arrange(desc(n))
+
+movies_n
+```
+
+
+The table with the average gross earning and budget (`gross` and `budget`) by genre. 
+    Ranked genres by `return_on_budget` in descending order:
+    
+```{r}
+movies_gross <- movies %>%
+  group_by(genre) %>%
+  summarise(avegross = mean(gross), avebudget=mean(budget)) %>%
+  mutate(return_on_budget=avegross/avebudget)%>%
+  arrange(desc(return_on_budget))
+movies_gross
+```
+The table below shows the top 15 directors who have created the highest gross revenue in the box office, with the mean, median, and standard deviation per director.
+```{r}
+directors <- movies %>% 
+  group_by(director) %>% 
+  summarize(sumgross=sum(gross),meangross=mean(gross),mediangross=median(gross),sdgross=sd(gross)) %>% 
+  arrange(desc(sumgross))
+
+top_director_15<-top_n(directors,15,sumgross)
+
+top_director_15
+```
+The table below describes how ratings are distributed by genre, with mean, min, max, median, SD and density graph that visually shows how ratings are distributed:
+```{r}
+movies_rating <- movies %>% 
+  group_by(genre) %>%
+   summarise(rating_mean = mean(rating),ratings_min = min(rating), ratings_max= max(rating),rating_median=median(rating), rating_SD=sd(rating))
+
+movies_rating
+
+ggplot(movies,aes(x=rating, fill=genre))+
+  geom_density()+
+  facet_wrap(~genre)+
+  theme_bw()+
+  labs(x = "rating", y="density", title= "How rating distributed over genre")+
+  theme(legend.position='none') +
+  NULL
+
+  
+```
+The relationship between `gross` and `cast_facebook_likes` was examined. 
+
+Y-axis: Gross Revenue
+
+X-axis: Facebook Likes of cast
+
+  
+```{r, gross_on_fblikes}
+
+ggplot(movies, aes(x=cast_facebook_likes,y=gross))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  theme_bw()+
+  labs(x="Facebook Likes of cast", y="Gross Revenue", title="The Relationship Between The Facebook Likes of cast and Gross Revenue")
+
+ggplot(movies, aes(x=cast_facebook_likes,y=gross))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  scale_x_log10()+
+  theme_bw()+
+  labs(x="Facebook Likes of cast", y="Gross Revenue", title="The Relationship Between The Facebook Likes of cast and Gross Revenue")  
+
+```
+
+To identify the relationship, we first plotted Facebook likes against revenue. We can not conclude any useful information from the first graph since we can see some extreme value in Facebook likes. To eliminate the effect of extreme values, we can use log to transform the number of Facebook likes. After the transformation, we can see a curve that shows a positive relationship between Facebook likes and movie's revenue. Since the curve is mostly smooth, we believe that Facebook likes are a good predictor of how much a movie makes in most cases.
+
+
+  The Relationship Between The Budget and Gross Revenue:
+
+```{r, gross_on_budget}
+
+ggplot(movies, aes(x=budget,y=gross))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  theme_bw()+
+  labs(x = "Budget", y="Gross Revenue", title= "The Relationship Between The Budget and Gross Revenue")
+
+```
+According to the chart, the gross revenue has a positive relationship with the budget. Higher budget may imply better production, famous cast etc which attracts more audiences. When film has higher budget, the film usually gains higher revenue. Also, the slope is relatively steep. Thus, budget is a good indicator.
+
+
+```{r, gross_on_rating}
+
+ggplot(movies, aes(x=rating,y=gross))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  facet_wrap(~genre)+
+  theme_bw()+
+  labs(x="Rating", y="Gross Revenue", title="The Relationship Between Rating and Gross Revenue")
+
+```
+In most genres,like Action and Adventures, IMDB ratings are positively related to gross, which means IMDB rating is a good indicator of how much a movie can make at box office. 
+
+However, in several genres like musical and sci-fi, their sample size is very small, leading to the fact that we cannot deduce the relationship between the gross and ratings. 
+
+
+# Returns of financial stocks
+
+We will use the `tidyquant` package to download historical data of stock prices, calculate returns, and examine the distribution of returns. 
+
+We must first identify which stocks we want to download data for, and for this we must know their ticker symbol; Apple is known as AAPL, Microsoft as MSFT, McDonald's as MCD, etc. The file `nyse.csv` contains 508 stocks listed on the NYSE, their ticker `symbol`, `name`, the IPO  (Initial Public Offering) year, and the sector and industry the company is in.
+
+
+```{r load_nyse_data, message=FALSE, warning=FALSE}
+nyse <- read_csv(here::here("data","nyse.csv"))
+```
+
+Based on this dataset, create a table and a bar plot that shows the number of companies per sector, in descending order
+
+```{r companies_per_sector}
+
+companies_per_sector<- 
+  nyse %>% 
+  group_by(sector) %>% 
+  count(sort=TRUE)
+ggplot(data=companies_per_sector,mapping=aes(y=reorder(sector,n),x=n)) +
+geom_col(fill='blue') +
+  labs(title='Companies per sector',
+       y='Sector',
+       x='Number of companies per sector')
+
+```
+The following 8 stocks including SPY or SP500 ETF (Exchange Traded Fund) were added.
+
+```{r get_price_data, message=FALSE, warning=FALSE, cache=TRUE}
+
+myStocks <- c("TOT","KO","GSK","HLT","MS","NKE","PG","SPY" ) %>%
+  tq_get(get  = "stock.prices",
+         from = "2011-01-01",
+         to   = "2020-08-31") %>%
+  group_by(symbol) 
+
+glimpse(myStocks) # examine the structure of the resulting data frame
+```
+
+Financial performance analysis depend on returns; If I buy a stock today for 100 and I sell it tomorrow for 101.75, my one-day return, assuming no transaction costs, is 1.75%. So given the adjusted closing prices, our first step is to calculate daily and monthly returns.
+
+
+```{r calculate_returns, message=FALSE, warning=FALSE, cache=TRUE}
+#calculate daily returns
+myStocks_returns_daily <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "daily", 
+               type       = "log",
+               col_rename = "daily_returns",
+               cols = c(nested.col))  
+
+#calculate monthly  returns
+myStocks_returns_monthly <- myStocks %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "monthly", 
+               type       = "arithmetic",
+               col_rename = "monthly_returns",
+               cols = c(nested.col)) 
+
+#calculate yearly returns
+myStocks_returns_annual <- myStocks %>%
+  group_by(symbol) %>%
+  tq_transmute(select     = adjusted, 
+               mutate_fun = periodReturn, 
+               period     = "yearly", 
+               type       = "arithmetic",
+               col_rename = "yearly_returns",
+               cols = c(nested.col))
+```
+
+The table below summarizes monthly returns for each of the stocks and `SPY`; min, max, median, mean, SD.
+
+```{r summarise_monthly_returns,echo=FALSE}
+summarise_monthly_returns<-myStocks_returns_monthly %>% 
+group_by(symbol) %>% 
+summarize(mean=mean(monthly_returns),
+median=median(monthly_returns),
+standard_deviation=sd(monthly_returns),
+min=min(monthly_returns),
+max=max(monthly_returns)) %>% 
+  arrange(desc(standard_deviation))
+summarise_monthly_returns
+
+```
+
+
+We plot a density plot, using `geom_density()`, for each of the stocks.
+```{r density_monthly_returns}
+
+ggplot(data = myStocks_returns_monthly, mapping=aes(x = monthly_returns, fill=symbol))+
+  geom_density()+
+  facet_wrap(~symbol)+
+  scale_x_continuous(labels = scales::percent)+
+  labs(title='Distribution of stock returns',x='Monthly Returns')+
+  theme(legend.position='none')
+
+```
+
+The least risky is the SPY since it has the narrowest distribution, indicating the lowest dispersion of values around the mean (i.e. the lowest standard deviation). The riskiest stock seems to be MS (Morgan Stanley) as its distribution seems to be the widest. If we check above we can see that MS has the highest standard deviation indeed.
+
+Finally, we make a plot that shows the expected monthly return (mean) of a stock on the Y axis and the risk (standard deviation) in the X-axis.
+
+```{r risk_return_plot}
+library(ggrepel)
+ggplot(data=summarise_monthly_returns, mapping=aes(x=standard_deviation,y=mean,colour=symbol,label=symbol))+
+  geom_point()+
+  geom_text_repel()+
+  labs(title='Asscociated Risk With Returned Stock',x='Standard Deviation',y='Average Monthly Return')+
+theme(legend.position='none')+
+  scale_x_continuous(labels = scales::percent)+
+  scale_y_continuous(labels = scales::percent)
+```
+
+TOT (Total S.A.) is the only stock with a relatively high standard deviation and low return.
+
+# On your own: IBM HR Analytics
+
+
+For this task, a data set on Human Resource Analytics was analysed. The [IBM HR Analytics Employee Attrition & Performance data set](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset) is a fictional data set created by IBM data scientists.  Among other things, the data set includes employees' income, their distance from work, their position in the company, their level of education, etc. A full description can be found on the website.
+
+
+First let us load the data.
+
+```{r, load_dataset, warning=FALSE, message=FALSE}
+
+hr_dataset <- read_csv(here::here("data", "datasets_1067_1925_WA_Fn-UseC_-HR-Employee-Attrition.csv"))
+glimpse(hr_dataset)
+
+```
+
+The data set was cleaned, as variable names are in capital letters, some variables were not necessary, and some variables, e.g., `education` were given as a number rather than a more useful description.
+
+
+```{r, clean}
+
+hr_cleaned <- hr_dataset %>% 
+  clean_names() %>% 
+  mutate(
+    education = case_when(
+      education == 1 ~ "Below College",
+      education == 2 ~ "College",
+      education == 3 ~ "Bachelor",
+      education == 4 ~ "Master",
+      education == 5 ~ "Doctor"
+    ),
+    environment_satisfaction = case_when(
+      environment_satisfaction == 1 ~ "Low",
+      environment_satisfaction == 2 ~ "Medium",
+      environment_satisfaction == 3 ~ "High",
+      environment_satisfaction == 4 ~ "Very High"
+    ),
+    job_satisfaction = case_when(
+      job_satisfaction == 1 ~ "Low",
+      job_satisfaction == 2 ~ "Medium",
+      job_satisfaction == 3 ~ "High",
+      job_satisfaction == 4 ~ "Very High"
+    ),
+    performance_rating = case_when(
+      performance_rating == 1 ~ "Low",
+      performance_rating == 2 ~ "Good",
+      performance_rating == 3 ~ "Excellent",
+      performance_rating == 4 ~ "Outstanding"
+    ),
+    work_life_balance = case_when(
+      work_life_balance == 1 ~ "Bad",
+      work_life_balance == 2 ~ "Good",
+      work_life_balance == 3 ~ "Better",
+      work_life_balance == 4 ~ "Best"
+    )
+  ) %>% 
+  select(age, attrition, daily_rate, department,
+         distance_from_home, education,
+         gender, job_role,environment_satisfaction,
+         job_satisfaction, marital_status,
+         monthly_income, num_companies_worked, percent_salary_hike,
+         performance_rating, total_working_years,
+         work_life_balance, years_at_company,
+         years_since_last_promotion)
+
+```
+
+To begin Exploratory Data Analysis, the frequency of leaving company was examined (`attrition`).
+
+```{r, attrition} 
+hr_attrition<-hr_cleaned %>% 
+ group_by(attrition) %>% 
+count(sort=TRUE)
+hr_attrition
+```
+The attriction number or number of people leaving a company is 237. 
+Rate of attrition is thus 237/1470 = 16.12%.
+
+Next, we examine how `age`, `years_at_company`, `monthly_income` and `years_since_last_promotion` are distributed. 
+
+```{r distribution 1} 
+skimr::skim(hr_cleaned)
+favstats (~age, data=hr_cleaned)
+favstats (~years_at_company, data=hr_cleaned)
+favstats (~monthly_income, data=hr_cleaned)
+favstats (~years_since_last_promotion, data=hr_cleaned)
+```
+
+
+It seemed that Age is closest to a normal distrbution as its mean and median have the smallest difference and are almost identical. In addition, there was no apparent skew in the histogram and the data seems to be distributed symmetrical across the mean. 
+
+Following this, the distribution of `job_satisfaction` and `work_life_balance` was studied.
+
+```{r challenge1, out.width="90%", echo=FALSE}
+# Bar Plot - Frequency
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = job_satisfaction)) + theme_bw() +
+  geom_bar(fill="gold") + 
+  labs(x = "Job Satisfaction", y = "Count", subtitle = "Job Satisfaction by Count")
+
+# Bar Plot - Count
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = job_satisfaction)) + theme_bw() +
+  geom_bar(fill="orange", aes(y=(..count..)/sum(..count..))) +
+  labs(x = "Job Satisfaction", y = "Proportion (%)", subtitle = "Job Satisfaction by Proportion")
+
+# Bar Plot - Count
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = work_life_balance)) + theme_bw() +
+  geom_bar(fill="gold")+
+  labs(x = "Work Life Balance", y = "Count", subtitle = "Job Satisfaction by Count")
+
+# Bar Plot - Frequency
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = work_life_balance)) + theme_bw() +
+  geom_bar(fill="orange", aes(y=(..count..)/sum(..count..)))+
+  labs(x = "Work Life Balance", y = "Proportion (%)", subtitle = "Job Satisfaction by Proportion")
+
+```
+
+It was clearly seen that the most employees reported a high or very high job satisfaction.
+
+Following this, the relationship between monthly income and education or monthly income and gender was explored.
+
+```{r relationship} 
+
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = education,
+    y = monthly_income)) +
+  geom_boxplot(fill="orange") + theme_bw() +
+  labs(x = "Education", y = "Income ($)", subtitle = "Income vs Education" )
+
+
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = gender,
+    y = monthly_income)) +
+  geom_boxplot(fill="dark red") + theme_bw() +
+  labs(x = "Gender", y = "Income ($)", subtitle = "Income vs Gender")
+
+
+```
+These plots above indicate that income levels differs across education levels and gender. However, difference across genders did not appear to be as significant as compared to those with differing education levels.
+
+A boxplot of income vs job role was then plotted. Care was taken to ensure that the highest-paid job roles appears first.
+```{r income effect} 
+
+ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = reorder(job_role, -monthly_income, FUN = median),
+    y = monthly_income)) +
+  geom_boxplot(fill="Gold") + 
+  labs(x = "Job Role", y = "Income", subtitle = "Income vs Job Role") +
+  theme(axis.text=element_text(size=4),axis.title=element_text(size=10))
+
+```
+
+
+From the graph, it is clear to see that the managers were by far the highest earners. The managers earned a monthly median amount of $17,454 dwarfing income figures of other roles. This was closely followed by Research Directors who earned a median of $16,510 monthly. 
+
+On the other side of spectrum, laboratory technicians and sales representatives were the lowest earning categories with median monthly incomes of $2,886 and $2,579 respectively.
+
+
+Next, a bar chart of the mean and median income by education level was plotted.
+```{r meanmedian, warning=FALSE, message=FALSE} 
+
+talk <- hr_cleaned  %>%
+ group_by(education) %>% 
+  summarize (meanIncome = mean(monthly_income), medianIncome = median(monthly_income))
+
+ggplot(data = talk, 
+        mapping = aes(x = reorder(education, -meanIncome), y = meanIncome)) + geom_col(fill='dark red') + 
+         labs(title="Mean Income by Education Level",
+              x="Education Level",
+              y="Mean Income ($)")  
+
+ggplot(data = talk, 
+        mapping = aes(x = reorder(education, -medianIncome), y = medianIncome)) + geom_col(fill='purple') + 
+         labs(title="Median Income by Education Level",
+              x="Education Level",
+              y="Median Income ($)")  
+    
+```
+Those with a doctor education level have the highest monthly incomes (mean = $8,278, median = $6,203). Those with education levels below college make up the lowest earning category with monthly income of $ 5,641 (mean) and $3,849 (median).
+
+
+Next, we plot the distribution of income by education level. In this task, we use a facet_wrap and a theme from `ggthemes`.
+
+
+```{r facet plot} 
+
+ggplot(data = hr_cleaned,mapping = aes(x = monthly_income)) +
+  geom_density(fill="red") +
+  facet_wrap(~ education) +
+  theme_bw() +
+  labs(title="Distribution of Income by Education Levels",
+       x="Median Income ($)",
+       y="Density")
+
+```
+From the graph, we can observe that the data is positively skewed for all education levels.
+
+Finally, we produce the Income vs Age plot, faceted by `job_role`.
+
+
+```{r facet plot 2} 
+
+my_ggp <- ggplot(
+  data = hr_cleaned,
+  mapping = aes(
+    x = age,
+    y = monthly_income)) +
+  geom_point() +
+  facet_wrap(~ job_role)+ geom_smooth(se=FALSE) +
+  theme_bw() +
+  labs(x = "Age", y = "Income", title="Income vs Age") +
+  theme(legend.position = "top") + theme(plot.title= element_text(size=18))
+my_ggp
+
+
+
+```
+Examining the spread of income across different ages, we can see how income tends to increased  with age especially in the early years. However, this effect tend to level off as the employee got older.
+
+It is interesting to note that for some occupations (e.g. laboratory technicians, sales representative), incomes do not increase with age.
+
+# Challenge 1: Replicating a chart.
+
+```{r warning=FALSE}
+
+knitr::include_graphics(here::here("images", "figure3.jpeg"), error = FALSE)
+
+```
+Our chart:
+```{r warning=FALSE}
+# Replicate Figure 3
+library(ggrepel)
+CDC_Males <- read_csv(here::here("data", "CDC_Males.csv"))
+glimpse(CDC_Males)
+skim(CDC_Males)
+CDC_Males_Firearm <- CDC_Males%>%
+  filter(type.fac=="Firearm-related") #filter for firearm-related only
+
+ggplot(CDC_Males_Firearm, aes(x=crude.suicide.White, y=crude.homicide.White,size= average.pop.white, label=ST)) + #x-axis: white suicide rate, y-axis: white homicide rate, size of points by average white population, label points by state
+  geom_point(aes(fill=gun.house.prev.category), color="black", stroke=0.7, shape=21, alpha=.7)+ #fill points by gun ownership category, outline color black, transparency .7, shape 21 because it is circle with fill and outline, stroke .7 is thickness of outline
+  scale_fill_brewer(type="seq",palette="YlOrRd", direction=1,breaks= c("10.2%-19.9%", "20.0%-34.9%","35.0%-44.9%","45.0%-65.5%"),labels=c("10.2%-19.9%", "20.0%-34.9%","35.0%-44.9%","45.0%-65.5%")) + #colorscheme from colorbrewer2
+  ggtitle("Figure 3. Relationship between the annual rates of firearm homicide and suicide among white men, \nby state, and reported household firearm ownership, 2008 to 2016.") + #plot title
+  xlab("White Suicide Rate (per 100 000 per Year)") + ylab("White Homicide Rate (per 100 000 per Year)")+ #x and y axis labels
+ theme_classic()+ # white background
+  theme(plot.title= element_text(color="black", size=10), axis.title.x= element_text(color="black", size=9, face="bold"), axis.title.y=element_text(color="black", size=9, face="bold"),legend.title=element_text(face="bold", size=8), legend.text=element_text(face="bold", size=7))+ #font size and type for title, legend, and axis labels
+  labs(fill="Gun ownership",size="White population") + #legend titles
+  guides(fill=guide_legend(order=1), size=guide_legend(order=2)) + # reorder legend
+  scale_size_continuous(breaks=c(200000,500000,1500000,3000000,7000000), labels= c("200 000", "500 000","1 500 000", "3 000 000", "7 000 000"), range=c(2,8))+ #legend scale and labels
+  geom_text_repel(segment.alpha=0, size=2.5)+ # point labels font and positioning
+    annotate(geom="text", x=27, y=1, label="Spearman correlation: 0.72", size=2.5)+ #add Spearman correlation annotation
+    
+  
+         NULL
+         
+
+```
+
+
+# Challenge 2: 2016 California Contributors
+
+In this challenge we are going to recreate a plot of the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.
+
+You can see the original plot below, which we are trying to recreate.
+
+```{r challenge2, out.width="100%"}
+knitr::include_graphics(here::here("images", "challenge2.png"), error = FALSE)
+```
+We start with loading the data.
+
+```{r, load_CA_data, warnings= FALSE, message=FALSE, cache=FALSE}
+
+CA_contributors_2016 <- vroom::vroom(here::here("data","CA_contributors_2016.csv")) # Loading Contribution Data Set
+
+Zip_codes_full <- vroom::vroom(here::here("data","zip_code_database.csv")) # Loading US zipcode data set
+
+glimpse(CA_contributors_2016) # inspecting the data sets
+
+glimpse(Zip_codes_full) # inspecting the data sets
+
+Zip_codes <- Zip_codes_full %>% #getting rid of unessecary data, only keeping the zip code and corresponding city
+  select(zip, primary_city)
+
+```
+Merging the two data sets:
+
+While glimpsing at the two data sets, we noticed that the while both data set have the column, "zip", one is saved as a double and one as a character.
+
+In order to merge the two with left_join, we have to change one of the two. Here we change the zip variable in the CA_contributors_2016 data set from double to character
+```{r, merging_data}
+
+CA_contributors_2016_amd <- CA_contributors_2016 %>%
+  mutate(zip = as.character(zip))
+
+# We can now merge the two datasets
+
+new_dataset <- left_join(CA_contributors_2016_amd, Zip_codes, by = "zip") #joining the two data set using the variable "zip" which is present in both datasets
+glimpse(new_dataset)
+
+```
+
+
+As we can see we have know successfully added the city to each contribution.
+
+
+Filtering for the relevant candidates:
+
+As the graph above shows the Top 10 cities for only two candidates, we are going to filter out the rest.
+  
+```{r, filtering}
+
+new_dataset_1 <- new_dataset %>% 
+  filter(cand_nm == "Clinton, Hillary Rodham" | cand_nm == "Trump, Donald J.") #filter for Trump and Clinton
+
+
+```
+
+```{r, reordering}
+
+library(tidytext)
+
+top_10_cities_orderd <- new_dataset_1 %>% 
+  group_by(primary_city, cand_nm) %>% #grouping data by candidate and city
+  summarise(contribution = sum(contb_receipt_amt)) %>%  # adding up the contributions for each candidate and city
+  ungroup() %>% 
+  group_by(cand_nm) %>% #grouping data by candidate only
+  top_n(10, contribution) %>% #selecting the top contributing cities for each group
+  ungroup() %>% 
+  mutate(primary_city = reorder_within(primary_city, contribution, cand_nm)) #reordering the cities by contribution for each candidate
+
+
+```
+
+Plotting the data:
+
+```{r, plotting}
+
+party_colors <- c("#2E74C0", "#CB454A") #color codes for the ggplot
+
+final_plot <- ggplot(top_10_cities_orderd, 
+                     aes(x = contribution, #show contribution on x axis
+                         y = reorder(primary_city, contribution), #shows cities on y axis, orderd by contribution
+                         fill = cand_nm)) + 
+  geom_col(show.legend = FALSE) + #hides the legend
+  scale_x_continuous(labels = scales::dollar) + #show y-axis values in dollar
+  theme_bw() + #changes the grid theme
+  facet_wrap(~cand_nm, scales = "free") + #shows data in two facets, one for each candidate
+  scale_fill_manual(values = party_colors) + #colors the two facets in blue and red
+  labs(x = "Amount raised", y = NULL, subtitle = "Where did candidates raise the most money?") + #formats lables and plot titles
+  theme(plot.subtitle = element_text(face = "bold")) + #makes plot title bold
+  theme(axis.title.x = element_text(face = "bold")) + #makes x-axis title bold
+  scale_y_reordered() + #necessary to properly show y-axis lables when "reorder_within" function is used
+  theme(aspect.ratio = 1) + #changes facets to appear as squares
+  NULL
+
+final_plot
+```
+
+The original plot for comparison:
+```{r Comparison, out.width="70%"}
+knitr::include_graphics(here::here("images", "challenge2.png"), error = FALSE)
+```
+
+# Details
+
+- Who did you collaborate with: Julia Tulloh, Ziyi Yang, Keshav Asokan, Aleksandar Vignjevic, Jasper Muller, Ilana Kovalenko
+- Approximately how much time did you spend on this problem set: 10-15 hours
+- What, if anything, gave you the most trouble: The Knitting Process & Finding Function to Plot.
+
+
+
+
+
+
+
+
+
+
+
+

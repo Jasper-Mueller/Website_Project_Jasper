@@ -92,15 +92,15 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "NYT MASKS"
-      subtitle = "Nex test"
-      image = "pic07.jpg"
+      title = "2016 US ELECTION"
+      subtitle = "Next test"
+      image = "election.jpg"
       url = "blogs/blog5"
 
     [[params.tiles.showcase]]
       title = "LONDON BIKE RENTALS"
       subtitle = "Breakdown of weekly bike rentals in London"
-      image = "pic07.jpg"
+      image = "bike.jpg"
       url = "blogs/london_bike_rentals"
 
     [[params.tiles.showcase]]
@@ -174,20 +174,20 @@ disqusShortname = ""
     title = "Email"
     email = "jmuller.mam2021@london.edu"
 
-    #[[params.contact.phone]]
-    #title = "Phone"
+    [[params.contact.phone]]
+    title = "Stay tuned!"
     #phone = "(000) 000-0000 x1234"
 
-    #[[params.contact.address]]
-    #title = "Address"
+    [[params.contact.address]]
+    title = "Stay tuned!"
     #street = "Street"
     #city = "City, ST 00000"
     #country = "Country"
 
-  # Footer section
-  #[params.footer]
-    #enable = true
-    #copyright = "Company Name"
+   #Footer section
+  [params.footer]
+    enable = true
+    copyright = "Jasper Müller"
 
     # Uses font awesome icons
     #[[params.footer.social]]
