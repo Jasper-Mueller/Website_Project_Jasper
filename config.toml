@@ -145,9 +145,10 @@ disqusShortname = ""
     Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.
     From this exercise, we move to regression analysis where we iteratively test out a few indicators to see if they are significant in explaining the variability within the dataset.
     We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. 
-    This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on unseen problem."""
+    This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on an unseen problem."""
     buttonText = "Have a look!"
-    url = "blogs/airbnb_cape_town"
+    url = "/docs/202009_CV_Jasper.pdf"
+    #url = "blogs/airbnb_cape_town"
 
 
   # Contact section
@@ -174,11 +175,11 @@ disqusShortname = ""
     # by copying the corresponding map with frontmatter code.
     [[params.contact.email]]
     title = "Email"
-    email = "jmuller.mam2021@london.edu"
+    email = "Please use the contact form instead"
 
     [[params.contact.phone]]
     title = "Stay tuned!"
-    #phone = "(000) 000-0000 x1234"
+    phone = "Please use the contact form instead"
 
     [[params.contact.address]]
     title = "Address"
