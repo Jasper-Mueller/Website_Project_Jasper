@@ -81,7 +81,7 @@ disqusShortname = ""
   [params.banner]
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
-    title = "Hey, I'm Jasper. Nice to meet you!"
+    title = "Hey, I'm Jasper. \n Nice to meet you!"
     subtitle = "IN THE UPCOMING WEEKS, I WILL TAKE YOU ON MY JOURNEY EXPLORING R AND DATA SCIENCE AS A WHOLE. BUCKLE UP!"
     buttonText = "Have a look!"
 
@@ -104,16 +104,16 @@ disqusShortname = ""
       url = "blogs/london_bike_rentals"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "Lorem Etiam Nullam"
-      image = "pic03.jpg"
-      url = "blogs/magna"
+      title = "PREDICTING AIRBNB PRICES"
+      subtitle = "Predicting the price of a 4 day trip in capetown"
+      image = "pool_2.jpg"
+      url = "blogs/airbnb_cape_town"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
-      url = "blogs/ipsum"
+      title = "US HIGHSCHOOL HEALTH"
+      subtitle = "Analyzing health patterns among US highschoolers"
+      image = "volleyball.jpg"
+      url = "blogs/health_data"
 
     #[[params.tiles.showcase]]
       #title = "Consequat"
@@ -138,13 +138,15 @@ disqusShortname = ""
   # Section Type Two
   [params.two]
     enable = true
-    title = "Massa libero"
-    subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-    Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-    Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-    Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-    Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
-    buttonText = "Get Started"
+    title = "Spotlight - Predicting Airbnb Prices"
+    subtitle = """In this exercise, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. 
+    The city we examined was Cape Town and we tried to predict the total cost of four nights for two people.
+    To kick things off, we performed EDA to examine the data in more detail. 
+    Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.
+    From this exercise, we move to regression analysis where we iteratively test out a few indicators to see if they are significant in explaining the variability within the dataset.
+    We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. 
+    This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on unseen problem."""
+    buttonText = "Have a look!"
     url = "blogs"
 
 

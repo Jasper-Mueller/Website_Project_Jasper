@@ -1,0 +1,71 @@
+Variable Name,Reason
+scrape_id,The scrape ID is the same for every entry. 
+last_scraped,Date of scraping not relevant for further data analysis.
+name,All of the variables are different and only text data.
+summary,Host description for their listing in text form. Would be difficult to extract information.
+space,Host description for their listing in text form. Would be difficult to extract information.
+description,Host description for their listing in text form. Would be difficult to extract information.
+experiences_offered,"All values are ""none""."
+neighborhood_overview,Host description for neighborhood in text form. Would be difficult to extract information.
+notes,Additional information provided by host in text form. Would be difficult to extract information.
+transit,Host description for transit in text form. Would be difficult to extract information.
+access,Host description for listing access in text form. Would be difficult to extract information.
+interaction,Host description for interaction with guests in text form. Would be difficult to extract information.
+house_rules,Host description for house rules in text form. Would be difficult to extract information.
+thumbnail_url,Url not relevant for further data analysis.
+medium_url,Url not relevant for further data analysis.
+picture_url,Url not relevant for further data analysis.
+xl_picture_url,Url not relevant for further data analysis.
+host_id,"All are unique values, therefore is redundant since we are keeping listing ID"
+host_url,Url not relevant for further data analysis.
+host_name,Host name is redundant with listing ID
+host_location,Variable is inconsistently formatted and not relevant for further data analysis.
+host_about,Host introduction in text form. Would be difficult to extract information.
+host_response_rate,"Most of the variables are N/A or 100%, therefore would not be useful in explaining our dependent variable."
+host_acceptance_rate,The distribution is very heavily left skewed and contains many N/A values.
+host_thumbnail_url,Url not relevant for further data analysis.
+host_picture_url,Url not relevant for further data analysis.
+host_neighbourhood,Only contains N/A values.
+host_listings_count,"Captured in calculated_host_listings_count, thus is redundant."
+host_total_listings_count,"Captured in calculated_host_listings_count, thus is redundant."
+host_verifications,Type of verififcation irrelevant for analysis.
+host_has_profile_pic,"Out of 17,300 ppl, only 50 have no picutre."
+street,"Street name is too granular, we will use neighborhood_cleansed to account for location in our analysis."
+neighbourhood,Only contains N/A values.
+neighbourhood_group_cleansed,Only contains N/A values.
+city,"Data quality is poor, as there are typos and the majority of entries are in Cape Town."
+state,"Data quality is poor, as there are typos and different formats. The majority of entries are in the same state."
+zipcode,"Zip code is too granular, we will use neighborhood_cleansed to account for location in our analysis."
+market,Market is almost always Cape Town.
+smart_location,"Data quality is poor, with cities spelled in different ways."
+country_code,"All listings are in South Africa with the exception of one listing in Congo. This is obviously a mistake, as other data like latitude or longitude clearly shows the listing is in Cape Town. Hence we can delete the column."
+country,"All listings are in ZA with the exception of one listing in CG. This is obviously a mistake, as other data like latitude or longitude clearly shows the listing is in Cape Town. Hence we can delete the column."
+bed_type,"The vast majority of listings (24,029) only contain one type of bed: ""Real Bed"" "
+square_feet,Data is incomplete. 99.8% are missing values.
+weekly_price,"Since we are only looking at rentals for <=4 days, the weekly price is irrelevant."
+monthly_price,"Since we are only looking at rentals for <= 4 days, the monthly price is irrelevant."
+maximum_nights,"We are looking at listings where minimum nights is <= 4, thus maximum nights is irrelevant."
+minimum_minimum_nights,This is a forward-looking variable for the smallest minimum nights available looking 1 year out. This is irrelevant for our analysis.
+maximum_minimum_nights,This is a forward-looking variable for the largest minimum nights available looking 1 year out. This is irrelevant for our analysis.
+minimum_maximum_nights,This is a forward-looking variable for the smallest maximum nights available looking 1 year out. This is irrelevant for our analysis.
+maximum_maximum_nights,This is a forward-looking variable for the largest maximum nights available looking 1 year out. This is irrelevant for our analysis.
+minimum_nights_avg_ntm,This is a forward-looking variable for the average minimum nights available looking 1 year out. This is irrelevant for our analysis.
+maximum_nights_avg_ntm,This is a forward-looking variable for the average maximum nights available looking 1 year out. This is irrelevant for our analysis.
+calendar_updated,Irrelevant for future analysis as it only indicates when the listing calendar was last updated.
+has_availability,Only has one unique value: TRUE
+availability_30,This is a forward-looking variable for the availability of the listing x days into the future. This is irrelevant for our analysis.
+availability_60,This is a forward-looking variable for the availability of the listing x days into the future. This is irrelevant for our analysis.
+availability_90,This is a forward-looking variable for the availability of the listing x days into the future. This is irrelevant for our analysis.
+availability_365,This is a forward-looking variable for the availability of the listing x days into the future. This is irrelevant for our analysis.
+calendar_last_scraped,Irrelevant for future analysis as it only indicates when the calendar was last scraped.
+number_of_reviews_ltm,Represents the number of reviews in the last twelve months. It is highly correlated with number_of_reviews. We decided to keep number_of_reviews because that is how the user interface shows it on the Airbnb website. 
+requires_license,Contains only N/A values.
+license,99.9% incomplete.
+jurisdiction_names,Contains only N/A values.
+is_business_travel_ready,Only has one unique value: FALSE
+require_guest_profile_picture,99.9% are FALSE.
+require_guest_phone_verification,Around 99% are FALSE.
+calculated_host_listings_count,Most of the entries are 1 with some extreme outliers.
+calculated_host_listings_count_entire_homes,Most of the entries are 1 with some extreme outliers.
+calculated_host_listings_count_private_rooms,Most of the entries are 1 with some extreme outliers.
+calculated_host_listings_count_shared_rooms,Most of the entries are 1 with some extreme outliers.

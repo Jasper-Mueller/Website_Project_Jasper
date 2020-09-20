@@ -69,6 +69,17 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
     </item>
     
     <item>
+      <title>Analyzing US highschool health</title>
+      <link>/blogs/health_data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/health_data/</guid>
+      <description>categories:- &#34;&#34;- &#34;&#34;date: “2020-20-09”description: Analyzing health patterns among US highschoolersdraft: falseimage: pic07.jpgkeywords: &#34;&#34;slug: health_datatitle: Analyzing US highschool health
+Youth Risk Behavior SurveillanceEvery two years, the Centers for Disease Control and Prevention conduct the Youth Risk Behavior Surveillance System (YRBSS) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns.
+In the following we will conduct various health-related analysis.</description>
+    </item>
+    
+    <item>
       <title>Bike Rentals London</title>
       <link>/blogs/london_bike_rentals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -76,6 +87,15 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <guid>/blogs/london_bike_rentals/</guid>
       <description>library(tidyverse) # Load ggplot2, dplyr, and all the other tidyverse packageslibrary(mosaic)library(ggthemes)library(lubridate)library(here)library(skimr)library(janitor)library(httr)library(readxl)library(vroom)library(scales)Challenge 2: Excess rentals in TfL bike sharingRecall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following
 url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot;# Download TFL data to temporary filehttr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))## Response [https://airdrive-secure.</description>
+    </item>
+    
+    <item>
+      <title>Predicting AIRBNB prices</title>
+      <link>/blogs/airbnb_cape_town/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/airbnb_cape_town/</guid>
+      <description>Executive SummaryIn this exercise, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. The city we examined was Cape Town and we tried to predict the total cost of four nights for two peopleTo kick things off, we performed EDA to examine the data in more detail. Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.</description>
     </item>
     
   </channel>

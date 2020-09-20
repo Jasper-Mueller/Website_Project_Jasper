@@ -78,7 +78,15 @@
   </url>
   
   <url>
+    <loc>/blogs/health_data/</loc>
+  </url>
+  
+  <url>
     <loc>/blogs/london_bike_rentals/</loc>
+  </url>
+  
+  <url>
+    <loc>/blogs/airbnb_cape_town/</loc>
   </url>
   
 </urlset>
