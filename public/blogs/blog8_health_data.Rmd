@@ -15,7 +15,7 @@ title: Analyzing US highschool health
 ---
 
 
-```{r, setup, echo=FALSE}
+```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r load-libraries, echo=FALSE}
+```{r load-libraries, include=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
 library(mosaic)
 library(ggthemes)

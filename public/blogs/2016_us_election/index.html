@@ -52,13 +52,13 @@
             
                 <li><a href="/">Home</a></li>
             
-                <li><a href="/blogs">Blogs</a></li>
+                <li><a href="/blogs">Have a look at my projects</a></li>
             
 
         </ul>
         <ul class="actions vertical">
             
-                <li><a href="/blogs" class="button special fit">Have a look!</a></li>
+                <li><a href="/docs/202009_CV_Jasper.pdf" class="button special fit">Check out my CV!</a></li>
             
             
         </ul>
@@ -79,8 +79,12 @@
                             
 
 
-<p>#2016 California Contributors</p>
+<div id="california-contributors" class="section level1">
+<h1>2016 California Contributors</h1>
 <p>In this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton.</p>
+</div>
+<div id="preparing-the-data" class="section level1">
+<h1>Preparing the Data</h1>
 <p>We start with loading the data.</p>
 <pre class="r"><code>CA_contributors_2016 &lt;- vroom::vroom(here::here(&quot;content&quot;, &quot;blogs&quot;,&quot;data&quot;,&quot;CA_contributors_2016.csv&quot;)) # Loading Contribution Data Set
 
@@ -114,6 +118,7 @@ glimpse(zip_codes_data)</code></pre>
 ## $ decommissioned       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
 ## $ estimated_population &lt;dbl&gt; 384, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
 ## $ notes                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;no NWS da...</code></pre>
+<p>We can see that the two data sets both have the column “zip”, which will come in handy later when we are going to join the two data sets. We can also see that the data set “CA_contributors_2016” has a lot of columns we wont need for our further analysis. Hence we are going to get rid of some of these columns.</p>
 <pre class="r"><code>#getting rid of unessecary data, only keeping the zip code and corresponding city
 zip_codes &lt;- zip_codes_data %&gt;% 
   select(zip, primary_city)</code></pre>
@@ -134,11 +139,13 @@ glimpse(new_dataset)</code></pre>
 ## $ zip               &lt;chr&gt; &quot;94939&quot;, &quot;93428&quot;, &quot;92337&quot;, &quot;95334&quot;, &quot;93011&quot;, &quot;958...
 ## $ contb_date        &lt;date&gt; 2016-04-26, 2016-04-20, 2016-04-02, 2016-11-21, ...
 ## $ primary_city      &lt;chr&gt; &quot;Larkspur&quot;, &quot;Cambria&quot;, &quot;Fontana&quot;, &quot;Livingston&quot;, &quot;...</code></pre>
-<p>As we can see we have know successfully added the city to each contribution.</p>
+<p>As we can see we have know successfully added the column “primary_city” to our main data set.</p>
 <div id="cumulative-earnings" class="section level2">
 <h2>Cumulative earnings</h2>
+<p>One thing we are going to look at in this post is a) how successful the candidates were in raising money in California.
+Our focus will thereby lie on the two main candidate Donald Trump (Republican) and Hillary clinton (Democrat)</p>
 <p>To calculate the cumulative earnings of each candidate, we first group all observations by candidate name and contribution date.
-We can than add the totals with the cumsum function</p>
+We can than add the totals with the “cumsum” function</p>
 <pre class="r"><code>#summarizing by group
 cumulative_contr &lt;-  new_dataset %&gt;% 
   group_by(cand_nm, contb_date) %&gt;% 
@@ -154,7 +161,9 @@ glimpse(cumulative_contr) </code></pre>
 ## $ contb_date         &lt;date&gt; 2015-06-15, 2015-06-16, 2015-06-17, 2015-06-18,...
 ## $ daily_contr_sum    &lt;dbl&gt; 17200, 9200, 8600, 66300, 21600, 10100, 17200, 2...
 ## $ daily_contr_cumsum &lt;dbl&gt; 17200, 26400, 35000, 101300, 122900, 133000, 150...</code></pre>
-<pre class="r"><code>#filtering for CLinton and Trump
+<p>We now have information on the daily totals of contributions for each candidate.
+However, like we mentioned above, we will focus our further analysis on Trump and Clinton</p>
+<pre class="r"><code>#filtering for Clinton and Trump
 cumulative_contr &lt;- cumulative_contr %&gt;% 
   filter(cand_nm == &quot;Clinton, Hillary Rodham&quot; | cand_nm == &quot;Trump, Donald J.&quot;,
          contb_date &lt;= as.Date(&quot;2016-11-08&quot;))
@@ -175,7 +184,8 @@ cumulative_contr</code></pre>
 ##  9 Clinton, Hillary Rodham 2015-04-19          52320.           1120467.
 ## 10 Clinton, Hillary Rodham 2015-04-20         103706.           1224174.
 ## # ... with 1,037 more rows</code></pre>
-<p>We can now plot the cumulative contributions over time</p>
+<p>Since we are now left with only the relevant observations, we can start visualizing our findings.
+We plot the cumulative contributions over time:</p>
 <pre class="r"><code>ggplot(cumulative_contr, aes(contb_date, daily_contr_cumsum/1000000, color = cand_nm)) +
   geom_line(size = 1) + 
   theme_bw() +
@@ -183,13 +193,19 @@ cumulative_contr</code></pre>
   scale_x_date(date_labels = &quot;%b %y&quot;) +
   scale_color_manual(values = party_colors) +
   NULL </code></pre>
-<p><img src="/blogs/blog9_2016_us_election_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/blog9_2016_us_election_files/figure-html/unnamed-chunk-4-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p>We can see that Clinton started raising contributions way before Trump did.
-This seems to be one of the reasons Clinton outperformed Trump in Carlifornia.</p>
-<p>Filtering for the relevant candidates:</p>
-<p>As the graph above shows the Top 10 cities for only two candidates, we are going to filter for Clinton and Trump again.</p>
-<pre class="r"><code>new_dataset_1 &lt;- new_dataset %&gt;% 
+This seems to be one of the reasons Clinton outperformed Trump in California.</p>
+</div>
+<div id="top-cities" class="section level2">
+<h2>Top Cities</h2>
+<p>In the second part of our analysis we are going to inspect which California cities contributed most to the candidates campaign.</p>
+<p>To do so, we are going to create a new data set, again filtering for Trump and Clinton only.</p>
+<pre class="r"><code>#Filtering for the relevant candidates:
+
+new_dataset_1 &lt;- new_dataset %&gt;% 
   filter(cand_nm == &quot;Clinton, Hillary Rodham&quot; | cand_nm == &quot;Trump, Donald J.&quot;) #filter for Trump and Clinton</code></pre>
+<p>We want to have a look at the top 10 contributing cities, ranked in descending order.</p>
 <pre class="r"><code>top_10_cities_orderd &lt;- new_dataset_1 %&gt;% 
   group_by(primary_city, cand_nm) %&gt;% #grouping data by candidate and city
   summarise(contribution = sum(contb_receipt_amt)) %&gt;%  # adding up the contributions for each candidate and city
@@ -198,7 +214,7 @@ This seems to be one of the reasons Clinton outperformed Trump in Carlifornia.</
   top_n(10, contribution) %&gt;% #selecting the top contributing cities for each group
   ungroup() %&gt;% 
   mutate(primary_city = reorder_within(primary_city, contribution, cand_nm)) #reordering the cities by contribution for each candidate</code></pre>
-<p>Plotting the data:</p>
+<p>Now that we have prepared our data, we can start visualizing our findings:</p>
 <pre class="r"><code>final_plot &lt;- ggplot(top_10_cities_orderd, 
                      aes(x = contribution, #show contribution on x axis
                          y = reorder(primary_city, contribution), #shows cities on y axis, orderd by contribution
@@ -212,11 +228,12 @@ This seems to be one of the reasons Clinton outperformed Trump in Carlifornia.</
   theme(plot.subtitle = element_text(face = &quot;bold&quot;)) + #makes plot title bold
   theme(axis.title.x = element_text(face = &quot;bold&quot;)) + #makes x-axis title bold
   scale_y_reordered() + #necessary to properly show y-axis lables when &quot;reorder_within&quot; function is used
-  #theme(aspect.ratio = 1) + #changes facets to appear as squares
+  theme(aspect.ratio = 1) + #changes facets to appear as squares
   NULL
 
 final_plot</code></pre>
 <p><img src="/blogs/blog9_2016_us_election_files/figure-html/plotting-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 
                         </div>

@@ -9,11 +9,18 @@ image: election.jpg
 keywords: ""
 slug: 2016_us_election
 title: 2016 US Election
-
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
 ---
 
 
-```{r, setup, echo=FALSE}
+```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
   warning = FALSE, 
@@ -29,7 +36,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+```{r load-libraries, warning=FALSE, message=FALSE, include=FALSE}
 library(tidyverse)
 library(mosaic)
 library(ggthemes)
@@ -48,12 +55,12 @@ party_colors <- c("#2E74C0", "#CB454A") #color codes for the ggplot
 ```
 
 
-#2016 California Contributors
+# 2016 California Contributors
 
 In this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton. 
 
 
-
+# Preparing the Data
 
 We start with loading the data.
 
@@ -68,17 +75,24 @@ glimpse(CA_contributors_2016)
 
 # inspecting the data sets
 glimpse(zip_codes_data)
+```
+
+We can see that the two data sets both have the column "zip", which will come in handy later when we are going to join the two data sets. We can also see that the data set "CA_contributors_2016" has a lot of columns we wont need for our further analysis. Hence we are going to get rid of some of these columns.
+
+```{r}
 
 #getting rid of unessecary data, only keeping the zip code and corresponding city
 zip_codes <- zip_codes_data %>% 
   select(zip, primary_city)
 
 ```
+
 Merging the two data sets:
 
 While glimpsing at the two data sets, we noticed that the while both data set have the column, "zip", one is saved as a double and one as a character.
 
 In order to merge the two with left_join, we have to change one of the two. Here we change the zip variable in the CA_contributors_2016 data set from double to character
+
 ```{r, merging_data}
 
 CA_contributors_2016_amd <- CA_contributors_2016 %>%
@@ -92,15 +106,15 @@ glimpse(new_dataset)
 ```
 
 
-As we can see we have know successfully added the city to each contribution.
-
-
+As we can see we have know successfully added the column "primary_city" to our main data set.
 
 ## Cumulative earnings
 
+One thing we are going to look at in this post is a) how successful the candidates were in raising money in California. 
+Our focus will thereby lie on the two main candidate Donald Trump (Republican) and Hillary clinton (Democrat) 
 
 To calculate the cumulative earnings of each candidate, we first group all observations by candidate name and contribution date.
-We can than add the totals with the cumsum function
+We can than add the totals with the "cumsum" function
 
 ```{r}
 
@@ -113,18 +127,26 @@ cumulative_contr <-  new_dataset %>%
 
 glimpse(cumulative_contr) 
 
+```
 
-#filtering for CLinton and Trump
+We now have information on the daily totals of contributions for each candidate.
+However, like we mentioned above, we will focus our further analysis on Trump and Clinton
+
+
+```{r}
+#filtering for Clinton and Trump
 cumulative_contr <- cumulative_contr %>% 
   filter(cand_nm == "Clinton, Hillary Rodham" | cand_nm == "Trump, Donald J.",
          contb_date <= as.Date("2016-11-08"))
 
 cumulative_contr
   
-
-
 ```
-We can now plot the cumulative contributions over time 
+
+
+
+Since we are now left with only the relevant observations, we can start visualizing our findings.
+We plot the cumulative contributions over time:
 
 
 ```{r}
@@ -139,22 +161,29 @@ ggplot(cumulative_contr, aes(contb_date, daily_contr_cumsum/1000000, color = can
 
 ```
 
-We can see that Clinton started raising contributions way before Trump did. 
-This seems to be one of the reasons Clinton outperformed Trump in Carlifornia.
+We can see that Clinton started raising contributions way before Trump did.
+This seems to be one of the reasons Clinton outperformed Trump in California.
+
+## Top Cities
+
+In the second part of our analysis we are going to inspect which California cities contributed most to the candidates campaign.
+
+To do so, we are going to create a new data set, again filtering for Trump and Clinton only.
 
 
-
-Filtering for the relevant candidates:
-
-As the graph above shows the Top 10 cities for only two candidates, we are going to filter for Clinton and Trump again.
   
 ```{r, filtering}
+
+#Filtering for the relevant candidates:
 
 new_dataset_1 <- new_dataset %>% 
   filter(cand_nm == "Clinton, Hillary Rodham" | cand_nm == "Trump, Donald J.") #filter for Trump and Clinton
 
 
 ```
+
+
+We want to have a look at the top 10 contributing cities, ranked in descending order.
 
 ```{r, reordering}
 
@@ -172,11 +201,9 @@ top_10_cities_orderd <- new_dataset_1 %>%
 
 ```
 
-Plotting the data:
+Now that we have prepared our data, we can start visualizing our findings:
 
 ```{r, plotting}
-
-
 
 final_plot <- ggplot(top_10_cities_orderd, 
                      aes(x = contribution, #show contribution on x axis
@@ -191,13 +218,12 @@ final_plot <- ggplot(top_10_cities_orderd,
   theme(plot.subtitle = element_text(face = "bold")) + #makes plot title bold
   theme(axis.title.x = element_text(face = "bold")) + #makes x-axis title bold
   scale_y_reordered() + #necessary to properly show y-axis lables when "reorder_within" function is used
-  #theme(aspect.ratio = 1) + #changes facets to appear as squares
+  theme(aspect.ratio = 1) + #changes facets to appear as squares
   NULL
 
 final_plot
 
 ```
-
 
 
 

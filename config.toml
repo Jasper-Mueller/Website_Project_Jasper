@@ -48,7 +48,7 @@ disqusShortname = ""
       url = "#"
 
     [[params.navigation.links]]
-      name = "Blogs"
+      name = "Have a look at my projects"
       url = "blogs"
 
     #[[params.navigation.links]]
@@ -67,15 +67,20 @@ disqusShortname = ""
     #    url = "UrlOfLink"
 
     # Button Style 1
+    #[[params.navigation.button1]]
+      #name = "Have a look!"
+      #url = "blogs"
+
+    # Button Style 2
     [[params.navigation.button1]]
-      name = "Have a look!"
-      url = "blogs"
+      name = "Check out my CV!"
+      url = "/docs/202009_CV_Jasper.pdf"
+
 
     # Button Style 2
     #[[params.navigation.button2]]
-      #name = "Log In"
-      #url = "#"
-
+      #name = "Check out my CV!"
+      #url = "/docs/202009_CV_Jasper.pdf"
 
   # Banner section
   [params.banner]
@@ -138,17 +143,18 @@ disqusShortname = ""
   # Section Type Two
   [params.two]
     enable = true
-    title = "Spotlight - Predicting Airbnb Prices"
-    subtitle = """In this exercise, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. 
-    The city we examined was Cape Town and we tried to predict the total cost of four nights for two people.
-    To kick things off, we performed EDA to examine the data in more detail. 
-    Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.
-    From this exercise, we move to regression analysis where we iteratively test out a few indicators to see if they are significant in explaining the variability within the dataset.
-    We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. 
-    This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on an unseen problem."""
-    buttonText = "Have a look!"
+    title = "A bit about myslef:"
+    subtitle = """ AMBITIOUS, ANALYTICAL AND ALWAYS CURIOUS. \n
+    I am Jasper, currently 25 years old and I was born and raised in Hamburg, Germany.
+    I studied business administration in Munich and Madrid, where I especially enjoyed IT and Finance related classes. 
+    After my undergrad, I worked for two years in startups, consultancies and strategy departments in Germany and abroad. 
+    I was part of teams operating in various industries like sports, automotive, telco and pharma. 
+    In my free time, I play football, work on little coding projects here and there and cool for me and my friends. 
+    This September I started my Masters in Analytics and Management at London Business School. """
+
+    
+    buttonText = "Check out my CV!"
     url = "/docs/202009_CV_Jasper.pdf"
-    #url = "blogs/airbnb_cape_town"
 
 
   # Contact section
@@ -178,7 +184,7 @@ disqusShortname = ""
     email = "Please use the contact form instead"
 
     [[params.contact.phone]]
-    title = "Stay tuned!"
+    title = "Telefon"
     phone = "Please use the contact form instead"
 
     [[params.contact.address]]

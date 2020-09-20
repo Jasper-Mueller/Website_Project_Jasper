@@ -17,9 +17,8 @@
       <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/blogs/2016_us_election/</guid>
-      <description>#2016 California Contributors
-In this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton.
-We start with loading the data.
+      <description>2016 California ContributorsIn this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton.
+Preparing the DataWe start with loading the data.
 CA_contributors_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;content&amp;quot;, &amp;quot;blogs&amp;quot;,&amp;quot;data&amp;quot;,&amp;quot;CA_contributors_2016.csv&amp;quot;)) # Loading Contribution Data Setzip_codes_data &amp;lt;- vroom::vroom(&amp;quot;http://www.uszipcodelist.com/zip_code_database.csv&amp;quot;)# inspecting the data setsglimpse(CA_contributors_2016) ## Rows: 1,292,843## Columns: 4## $ cand_nm &amp;lt;chr&amp;gt; &amp;quot;Clinton, Hillary Rodham&amp;quot;, &amp;quot;Clinton, Hillary Rodh.</description>
     </item>
     
@@ -40,8 +39,9 @@ In the following we will conduct various health-related analysis.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/blogs/london_bike_rentals/</guid>
-      <description>library(tidyverse) # Load ggplot2, dplyr, and all the other tidyverse packageslibrary(mosaic)library(ggthemes)library(lubridate)library(here)library(skimr)library(janitor)library(httr)library(readxl)library(vroom)library(scales)Challenge 2: Excess rentals in TfL bike sharingRecall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following
-url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot;# Download TFL data to temporary filehttr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))## Response [https://airdrive-secure.</description>
+      <description>Excess rentals in TfL bike sharing
+In this post we ar going to use the TfL data on how many bikes were hired in London every single day.We can get the latest data by running the following piece of code
+## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-09-18T09%3A06%3A54/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200920%2Feu-west-1%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20200920T212831Z&amp;amp;X-Amz-Expires=300&amp;amp;X-Amz-Signature=9b012bf1ff2cb2113c6ca533d6c4a94604e76434a90a54f55a41b3aaed65d518&amp;amp;X-Amz-SignedHeaders=host]## Date: 2020-09-20 21:29## Status: 200## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet## Size: 165 kB## &amp;lt;ON DISK&amp;gt; C:\Users\jacam\AppData\Local\Temp\RtmpWmfCcx\file388c4ab7787d.xlsx## Rows: 3,686## Columns: 2## $ Day &amp;lt;dttm&amp;gt; 2010-07-30, 2010-07-31, 2010-08-01, 2010.</description>
     </item>
     
     <item>
@@ -50,7 +50,7 @@ url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/blogs/airbnb_cape_town/</guid>
-      <description>Executive SummaryIn this exercise, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. The city we examined was Cape Town and we tried to predict the total cost of four nights for two peopleTo kick things off, we performed EDA to examine the data in more detail. Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.</description>
+      <description>Executive SummaryIn this post, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. The city we examined was Cape Town and we tried to predict the total cost of four nights for two peopleTo kick things off, we performed EDA to examine the data in more detail. Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.</description>
     </item>
     
   </channel>

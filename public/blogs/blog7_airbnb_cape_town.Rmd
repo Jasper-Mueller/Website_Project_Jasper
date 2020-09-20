@@ -49,10 +49,10 @@ library(modelr)
 
 # Executive Summary 
 
-In this exercise, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. The city we examined was Cape Town and we tried to predict the total cost of four nights for two people
+In this post, we analyse listings from Airbnb bookings (via insideairbnb.com) to better understand price patterns within a particular city. The city we examined was Cape Town and we tried to predict the total cost of four nights for two people
 To kick things off, we performed EDA to examine the data in more detail. Next, we subset the data and performed feature engineering to create new features which may suitable for further modeling.
 From this exercise, we move to regression analysis where we iteratively test out a few indicators to see if they are significant in explaining the variability within the dataset.
-We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on unseen problem.
+We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. This model achieves an **adjusted R squared** of **0.512**. Finally, we use this model to make a prediction on unseen problem.
 
 
 # Exploratory Data Analysis 
@@ -359,6 +359,7 @@ Now we will take a look at the minimum_nights variable and filter only to includ
 listings%>%
   count(minimum_nights)%>% 
   arrange(desc(n))%>%
+  top_n(10, n) %>% 
   kable()%>%
   kable_styling()
 
