@@ -74,7 +74,7 @@
                                 <h1>Analyzing US highschool health</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/volleyball.jpg" alt="" /></span>
                             
                             
 
@@ -86,7 +86,7 @@
 date: “2020-20-09”
 description: Analyzing health patterns among US highschoolers
 draft: false
-image: pic07.jpg
+image: volleyball.jpg
 keywords: ""
 slug: health_data
 title: Analyzing US highschool health</p>
@@ -385,7 +385,7 @@ percentile_ci</code></pre>
 <pre><code>## # A tibble: 1 x 2
 ##   lower_ci upper_ci
 ##      &lt;dbl&gt;    &lt;dbl&gt;
-## 1    0.323    0.339</code></pre>
+## 1    0.323    0.338</code></pre>
 <pre class="r"><code>not_active_plot &lt;- ggplot(not_active_ci, aes(x = stat)) +
   geom_density(fill = &quot;blue&quot;, alpha = 0.3) +
   labs(title= &quot;Bootstrap distribution of means&quot;,

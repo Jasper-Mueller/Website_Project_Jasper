@@ -6,7 +6,7 @@ categories:
 date: "2020-20-09"
 description: Analyzing health patterns among US highschoolers
 draft: false
-image: pic07.jpg
+image: volleyball.jpg
 keywords: ""
 slug: health_data
 title: Analyzing US highschool health

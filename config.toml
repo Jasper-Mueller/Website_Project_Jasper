@@ -147,7 +147,7 @@ disqusShortname = ""
     We build up on this to create a final model of 7 covariates (property type, room type, review ratings scores,  cancellation policy,  how many people the property accommodates, which neighbourhood the property is in and if the property has air conditioning installed. 
     This model achieves a **R squared** of **0.512**. Finally, we use this model to make a prediction on unseen problem."""
     buttonText = "Have a look!"
-    url = "blogs"
+    url = "blogs/airbnb_cape_town"
 
 
   # Contact section

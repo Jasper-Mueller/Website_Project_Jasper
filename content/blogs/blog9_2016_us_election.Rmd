@@ -5,7 +5,7 @@ categories:
 date: "2020-09-08"
 description: Looking at Clintons and Trumps campaign contributions in the time leading up to the 2016 US elections 
 draft: false
-image: pic07.jpg
+image: election.jpg
 keywords: ""
 slug: 2016_us_election
 title: 2016 US Election
