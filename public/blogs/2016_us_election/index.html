@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Analytics Student">
+	<meta name="author" content="Jasper Müller">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>2016 US Election &middot; Portfolio website for Kostis Christodoulou | Appllied Statistics</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>JASPER</strong> <span>An Analytics Journey</span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+                <li><a href="/blogs" class="button special fit">Have a look!</a></li>
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>2016 US Election</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                            
+                            
+
+
+<p>#2016 California Contributors</p>
+<p>In this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton.</p>
+<p>We start with loading the data.</p>
+<pre class="r"><code>CA_contributors_2016 &lt;- vroom::vroom(here::here(&quot;content&quot;, &quot;blogs&quot;,&quot;data&quot;,&quot;CA_contributors_2016.csv&quot;)) # Loading Contribution Data Set
+
+zip_codes_data &lt;- vroom::vroom(&quot;http://www.uszipcodelist.com/zip_code_database.csv&quot;)
+
+# inspecting the data sets
+glimpse(CA_contributors_2016) </code></pre>
+<pre><code>## Rows: 1,292,843
+## Columns: 4
+## $ cand_nm           &lt;chr&gt; &quot;Clinton, Hillary Rodham&quot;, &quot;Clinton, Hillary Rodh...
+## $ contb_receipt_amt &lt;dbl&gt; 50.0, 200.0, 5.0, 48.3, 40.0, 244.3, 35.0, 100.0,...
+## $ zip               &lt;dbl&gt; 94939, 93428, 92337, 95334, 93011, 95826, 90278, ...
+## $ contb_date        &lt;date&gt; 2016-04-26, 2016-04-20, 2016-04-02, 2016-11-21, ...</code></pre>
+<pre class="r"><code># inspecting the data sets
+glimpse(zip_codes_data)</code></pre>
+<pre><code>## Rows: 42,522
+## Columns: 16
+## $ zip                  &lt;chr&gt; &quot;00501&quot;, &quot;00544&quot;, &quot;00601&quot;, &quot;00602&quot;, &quot;00603&quot;, &quot;...
+## $ type                 &lt;chr&gt; &quot;UNIQUE&quot;, &quot;UNIQUE&quot;, &quot;STANDARD&quot;, &quot;STANDARD&quot;, &quot;S...
+## $ primary_city         &lt;chr&gt; &quot;Holtsville&quot;, &quot;Holtsville&quot;, &quot;Adjuntas&quot;, &quot;Aguad...
+## $ acceptable_cities    &lt;chr&gt; NA, NA, NA, NA, &quot;Ramey&quot;, &quot;Ramey&quot;, NA, NA, NA, ...
+## $ unacceptable_cities  &lt;chr&gt; &quot;I R S Service Center&quot;, &quot;Irs Service Center&quot;, ...
+## $ state                &lt;chr&gt; &quot;NY&quot;, &quot;NY&quot;, &quot;PR&quot;, &quot;PR&quot;, &quot;PR&quot;, &quot;PR&quot;, &quot;PR&quot;, &quot;PR&quot;...
+## $ county               &lt;chr&gt; &quot;Suffolk County&quot;, &quot;Suffolk County&quot;, &quot;Adjuntas&quot;...
+## $ timezone             &lt;chr&gt; &quot;America/New_York&quot;, &quot;America/New_York&quot;, &quot;Ameri...
+## $ area_codes           &lt;dbl&gt; 631, 631, 787939, 787, 787, NA, NA, 787939, 78...
+## $ latitude             &lt;dbl&gt; 40.8, 40.8, 18.2, 18.4, 18.4, 18.4, 18.4, 18.2...
+## $ longitude            &lt;dbl&gt; -73.0, -73.0, -66.7, -67.2, -67.2, -67.2, -67....
+## $ world_region         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA...
+## $ country              &lt;chr&gt; &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;, &quot;US&quot;...
+## $ decommissioned       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+## $ estimated_population &lt;dbl&gt; 384, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ notes                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, &quot;no NWS da...</code></pre>
+<pre class="r"><code>#getting rid of unessecary data, only keeping the zip code and corresponding city
+zip_codes &lt;- zip_codes_data %&gt;% 
+  select(zip, primary_city)</code></pre>
+<p>Merging the two data sets:</p>
+<p>While glimpsing at the two data sets, we noticed that the while both data set have the column, “zip”, one is saved as a double and one as a character.</p>
+<p>In order to merge the two with left_join, we have to change one of the two. Here we change the zip variable in the CA_contributors_2016 data set from double to character</p>
+<pre class="r"><code>CA_contributors_2016_amd &lt;- CA_contributors_2016 %&gt;%
+  mutate(zip = as.character(zip))
+
+# We can now merge the two datasets
+
+new_dataset &lt;- left_join(CA_contributors_2016_amd, zip_codes, by = &quot;zip&quot;) #joining the two data set using the variable &quot;zip&quot; which is present in both datasets
+glimpse(new_dataset)</code></pre>
+<pre><code>## Rows: 1,292,843
+## Columns: 5
+## $ cand_nm           &lt;chr&gt; &quot;Clinton, Hillary Rodham&quot;, &quot;Clinton, Hillary Rodh...
+## $ contb_receipt_amt &lt;dbl&gt; 50.0, 200.0, 5.0, 48.3, 40.0, 244.3, 35.0, 100.0,...
+## $ zip               &lt;chr&gt; &quot;94939&quot;, &quot;93428&quot;, &quot;92337&quot;, &quot;95334&quot;, &quot;93011&quot;, &quot;958...
+## $ contb_date        &lt;date&gt; 2016-04-26, 2016-04-20, 2016-04-02, 2016-11-21, ...
+## $ primary_city      &lt;chr&gt; &quot;Larkspur&quot;, &quot;Cambria&quot;, &quot;Fontana&quot;, &quot;Livingston&quot;, &quot;...</code></pre>
+<p>As we can see we have know successfully added the city to each contribution.</p>
+<div id="cumulative-earnings" class="section level2">
+<h2>Cumulative earnings</h2>
+<p>To calculate the cumulative earnings of each candidate, we first group all observations by candidate name and contribution date.
+We can than add the totals with the cumsum function</p>
+<pre class="r"><code>#summarizing by group
+cumulative_contr &lt;-  new_dataset %&gt;% 
+  group_by(cand_nm, contb_date) %&gt;% 
+  summarize(daily_contr_sum = sum(contb_receipt_amt)) %&gt;% 
+  mutate(daily_contr_cumsum = cumsum(daily_contr_sum))
+
+
+glimpse(cumulative_contr) </code></pre>
+<pre><code>## Rows: 5,315
+## Columns: 4
+## Groups: cand_nm [25]
+## $ cand_nm            &lt;chr&gt; &quot;Bush, Jeb&quot;, &quot;Bush, Jeb&quot;, &quot;Bush, Jeb&quot;, &quot;Bush, Je...
+## $ contb_date         &lt;date&gt; 2015-06-15, 2015-06-16, 2015-06-17, 2015-06-18,...
+## $ daily_contr_sum    &lt;dbl&gt; 17200, 9200, 8600, 66300, 21600, 10100, 17200, 2...
+## $ daily_contr_cumsum &lt;dbl&gt; 17200, 26400, 35000, 101300, 122900, 133000, 150...</code></pre>
+<pre class="r"><code>#filtering for CLinton and Trump
+cumulative_contr &lt;- cumulative_contr %&gt;% 
+  filter(cand_nm == &quot;Clinton, Hillary Rodham&quot; | cand_nm == &quot;Trump, Donald J.&quot;,
+         contb_date &lt;= as.Date(&quot;2016-11-08&quot;))
+
+cumulative_contr</code></pre>
+<pre><code>## # A tibble: 1,047 x 4
+## # Groups:   cand_nm [2]
+##    cand_nm                 contb_date daily_contr_sum daily_contr_cumsum
+##    &lt;chr&gt;                   &lt;date&gt;               &lt;dbl&gt;              &lt;dbl&gt;
+##  1 Clinton, Hillary Rodham 2015-04-11              6                  6 
+##  2 Clinton, Hillary Rodham 2015-04-12         213330.            213336.
+##  3 Clinton, Hillary Rodham 2015-04-13         194823.            408159.
+##  4 Clinton, Hillary Rodham 2015-04-14         164580             572739.
+##  5 Clinton, Hillary Rodham 2015-04-15         148065             720804.
+##  6 Clinton, Hillary Rodham 2015-04-16         136906             857710.
+##  7 Clinton, Hillary Rodham 2015-04-17         108677.            966387.
+##  8 Clinton, Hillary Rodham 2015-04-18         101760            1068147.
+##  9 Clinton, Hillary Rodham 2015-04-19          52320.           1120467.
+## 10 Clinton, Hillary Rodham 2015-04-20         103706.           1224174.
+## # ... with 1,037 more rows</code></pre>
+<p>We can now plot the cumulative contributions over time</p>
+<pre class="r"><code>ggplot(cumulative_contr, aes(contb_date, daily_contr_cumsum/1000000, color = cand_nm)) +
+  geom_line(size = 1) + 
+  theme_bw() +
+  labs(title = &quot;Trump starts raising funds later than Clinton in CA&quot;, subtitle = &quot;Cumulative contributions recieved up to election day in CA&quot;, y=&quot;Cumulative contributions (in mio $)&quot;, x = NULL, color = &quot;Candidate&quot;) +
+  scale_x_date(date_labels = &quot;%b %y&quot;) +
+  scale_color_manual(values = party_colors) +
+  NULL </code></pre>
+<p><img src="/blogs/blog9_2016_us_election_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>We can see that Clinton started raising contributions way before Trump did.
+This seems to be one of the reasons Clinton outperformed Trump in Carlifornia.</p>
+<p>Filtering for the relevant candidates:</p>
+<p>As the graph above shows the Top 10 cities for only two candidates, we are going to filter for Clinton and Trump again.</p>
+<pre class="r"><code>new_dataset_1 &lt;- new_dataset %&gt;% 
+  filter(cand_nm == &quot;Clinton, Hillary Rodham&quot; | cand_nm == &quot;Trump, Donald J.&quot;) #filter for Trump and Clinton</code></pre>
+<pre class="r"><code>top_10_cities_orderd &lt;- new_dataset_1 %&gt;% 
+  group_by(primary_city, cand_nm) %&gt;% #grouping data by candidate and city
+  summarise(contribution = sum(contb_receipt_amt)) %&gt;%  # adding up the contributions for each candidate and city
+  ungroup() %&gt;% 
+  group_by(cand_nm) %&gt;% #grouping data by candidate only
+  top_n(10, contribution) %&gt;% #selecting the top contributing cities for each group
+  ungroup() %&gt;% 
+  mutate(primary_city = reorder_within(primary_city, contribution, cand_nm)) #reordering the cities by contribution for each candidate</code></pre>
+<p>Plotting the data:</p>
+<pre class="r"><code>final_plot &lt;- ggplot(top_10_cities_orderd, 
+                     aes(x = contribution, #show contribution on x axis
+                         y = reorder(primary_city, contribution), #shows cities on y axis, orderd by contribution
+                         fill = cand_nm)) + 
+  geom_col(show.legend = FALSE) + #hides the legend
+  scale_x_continuous(labels = scales::dollar) + #show y-axis values in dollar
+  theme_bw() + #changes the grid theme
+  facet_wrap(~cand_nm, scales = &quot;free&quot;) + #shows data in two facets, one for each candidate
+  scale_fill_manual(values = party_colors) + #colors the two facets in blue and red
+  labs(x = &quot;Amount raised&quot;, y = NULL, subtitle = &quot;Where did candidates raise the most money?&quot;) + #formats lables and plot titles
+  theme(plot.subtitle = element_text(face = &quot;bold&quot;)) + #makes plot title bold
+  theme(axis.title.x = element_text(face = &quot;bold&quot;)) + #makes x-axis title bold
+  scale_y_reordered() + #necessary to properly show y-axis lables when &quot;reorder_within&quot; function is used
+  #theme(aspect.ratio = 1) + #changes facets to appear as squares
+  NULL
+
+final_plot</code></pre>
+<p><img src="/blogs/blog9_2016_us_election_files/figure-html/plotting-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://github.com/Jasper-Mueller" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="www.linkedin.com/in/jasper-mueller" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Jasper Müller</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

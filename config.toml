@@ -16,7 +16,7 @@ disqusShortname = ""
   #
   # All icons using Fontawesome's icon font. Look at fontawesome.io/icons
   # for more icons. The icons are represented by their corresponding
-  # CSS class.
+  # CSS class. 
 
   # Provide your metadata here.
   name = "Jasper Müller"
@@ -55,9 +55,9 @@ disqusShortname = ""
       #name = "Generic Blog"
       #url = "blogs/ipsum"
 
-    [[params.navigation.links]]
-      name = "Elements"
-      url = "elements.html"
+    #[[params.navigation.links]]
+      #name = "Elements"
+      #url = "elements.html"
 
     # Add custom links here by uncommenting code below. To remove links just delete
     # the [[params.navigation.links]] map associated with that link. Copy and paste
@@ -93,9 +93,9 @@ disqusShortname = ""
     
     [[params.tiles.showcase]]
       title = "2016 US ELECTION"
-      subtitle = "Next test"
+      subtitle = "Analyzing 2016 California contributions by city"
       image = "election.jpg"
-      url = "blogs/blog5"
+      url = "blogs/2016_us_election"
 
     [[params.tiles.showcase]]
       title = "LONDON BIKE RENTALS"
@@ -105,7 +105,7 @@ disqusShortname = ""
 
     [[params.tiles.showcase]]
       title = "PREDICTING AIRBNB PRICES"
-      subtitle = "Predicting the price of a 4 day trip in capetown"
+      subtitle = "Predicting the price of a 4 day trip in Capetown"
       image = "pool_2.jpg"
       url = "blogs/airbnb_cape_town"
 

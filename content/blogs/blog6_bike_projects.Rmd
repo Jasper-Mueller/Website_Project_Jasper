@@ -5,7 +5,7 @@ categories:
 date: "2020-14-09"
 description: An indepth look at bike rentals in London
 draft: false
-image: pic07.jpg
+image: bike.jpg
 keywords: ""
 slug: london_bike_rentals
 title: Bike Rentals London

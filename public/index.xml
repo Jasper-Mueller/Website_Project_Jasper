@@ -12,6 +12,18 @@
     
     
     <item>
+      <title>2016 US Election</title>
+      <link>/blogs/2016_us_election/</link>
+      <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/2016_us_election/</guid>
+      <description>#2016 California Contributors
+In this post we are going to examine contributions made to Hillary Clinton and Donald Trump in the state of California before the 2016 US primary elections. The traditionally blue state went was clearly won by the democrats and their nominee Hillary Clinton.
+We start with loading the data.
+CA_contributors_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;content&amp;quot;, &amp;quot;blogs&amp;quot;,&amp;quot;data&amp;quot;,&amp;quot;CA_contributors_2016.csv&amp;quot;)) # Loading Contribution Data Setzip_codes_data &amp;lt;- vroom::vroom(&amp;quot;http://www.uszipcodelist.com/zip_code_database.csv&amp;quot;)# inspecting the data setsglimpse(CA_contributors_2016) ## Rows: 1,292,843## Columns: 4## $ cand_nm &amp;lt;chr&amp;gt; &amp;quot;Clinton, Hillary Rodham&amp;quot;, &amp;quot;Clinton, Hillary Rodh.</description>
+    </item>
+    
+    <item>
       <title>Mask acceptance</title>
       <link>/blogs/blog5/</link>
       <pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate>

@@ -5,7 +5,7 @@ categories:
 date: "2020-20-09"
 description: Predicting the price of a 4 day trip to cape town
 draft: false
-image: pic07.jpg
+image: pool_2.jpg
 keywords: ""
 slug: airbnb_cape_town
 title: Predicting AIRBNB prices
